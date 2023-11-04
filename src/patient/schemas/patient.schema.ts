@@ -21,9 +21,6 @@ export class Patient {
   sex: string;
 
   @Prop()
-  isActivePatient: boolean;
-
-  @Prop()
   emailID: string;
 
   @Prop()
