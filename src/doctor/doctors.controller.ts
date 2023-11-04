@@ -9,8 +9,6 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { CreateDoctorDto } from './dto/create-user.dto';
-import { UpdateDoctorDto } from './dto/update-user.dto';
 import { Doctor } from './schemas/doctor.schema';
 import { DoctorsService } from './doctors.service';
 
@@ -35,28 +33,28 @@ export class DoctorsController {
   }
 
   @Post()
-  async createDoctor(
-    @Body() createDoctorDto: CreateDoctorDto,
-  ): Promise<Doctor> {
+  async createDoctor(@Body() createDoctorDto: Doctor): Promise<Doctor> {
     return this.doctorsService.createDoctor(createDoctorDto);
   }
 
   @Patch(':ID')
   async updateDoctor(
     @Param('ID') ID: string,
-    @Body() updateDoctorDto: UpdateDoctorDto,
+    @Body() updateDoctor: Doctor,
   ): Promise<Doctor | HttpException> {
     try {
-      const updatedDoctor = await this.doctorsService.updateDoctor(
-        ID,
-        updateDoctorDto,
-      );
+      const updatedDoctor = {
+        ...updateDoctor,
+        entityType: 'doctor',
+        ID: ID,
+      };
+      await this.doctorsService.updateDoctor(ID, updatedDoctor);
 
       return updatedDoctor;
     } catch (error) {
       // Handle and return appropriate error response
       return new HttpException(
-        'Failed to update doctor',
+        'Failed to update patient',
         HttpStatus.BAD_REQUEST,
       );
     }
