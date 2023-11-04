@@ -2,7 +2,6 @@ import { Doctor } from './schemas/doctor.schema';
 import { DoctorsRepository } from './doctors.repository';
 import { Injectable } from '@nestjs/common';
 import { uuid } from 'uuidv4';
-import { UpdateDoctorDto } from './dto/update-user.dto';
 
 @Injectable()
 export class DoctorsService {
@@ -32,23 +31,24 @@ export class DoctorsService {
     });
   }
 
-  async updateDoctor(
-    ID: string,
-    doctorUpdates: UpdateDoctorDto,
-  ): Promise<Doctor> {
+  async updateDoctor(ID: string, doctorUpdates: Doctor): Promise<Doctor> {
     try {
-      const updatedDoctor = await this.doctorsRepository.findOneAndUpdate(
-        { ID },
-        doctorUpdates,
+      const newDoctorUpdates = {
+        ...doctorUpdates,
+        ID: ID,
+      };
+      const updatedPatient = await this.doctorsRepository.findOneAndUpdate(
+        { ID: ID },
+        newDoctorUpdates,
       );
 
-      if (!updatedDoctor) {
-        throw new Error(`Doctor with ID ${ID} not found`); // Handle when the doctor is not found
+      if (!updatedPatient) {
+        throw new Error(`Patient with ID ${ID} not found`); // Handle when the patient is not found
       }
 
-      return updatedDoctor;
+      return updatedPatient;
     } catch (error) {
-      throw new Error('Failed to update doctor'); // Handle other errors
+      throw new Error('Failed to update patient'); // Handle other errors
     }
   }
 
