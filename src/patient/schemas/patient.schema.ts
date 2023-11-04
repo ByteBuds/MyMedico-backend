@@ -64,6 +64,31 @@ export class Patient {
     beforeMeal: boolean;
     afterMeal: boolean;
   }>;
+
+  @Prop({
+    type: [
+      {
+        ailment: String,
+        severity: String,
+        doctorID: String,
+        startDate: Date,
+        endDate: Date,
+        doctorsRemarks: String,
+        treatment: String,
+        medicinesPrescribed: [String],
+      },
+    ],
+  })
+  medicalHistory: Array<{
+    ailment: string;
+    severity: string;
+    doctorID: string;
+    startDate: Date;
+    endDate: Date;
+    doctorsRemarks: string;
+    treatment: string;
+    medicinesPrescribed: string[];
+  }>;
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);
