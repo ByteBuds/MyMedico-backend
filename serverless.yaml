@@ -1,0 +1,26 @@
+service: healthapp-backend
+
+useDotenv: true
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+    AWS_REGION_VAR: ${env:AWS_REGION_VAR}
+    AWS_ACCESS_KEY_ID_VAR: ${env:AWS_ACCESS_KEY_ID_VAR}
+    AWS_SECRET_ACCESS_KEY_VAR: ${env:AWS_SECRET_ACCESS_KEY_VAR}
+
+functions:
+  main:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
